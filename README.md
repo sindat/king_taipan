@@ -1,3 +1,3 @@
 # king_taipan - a Python botnet  
-Current stage: Disfunctional - under development
-Current tasks: Write codebase
+Currently the base is under development, no functionality has been added yet.  
+Expected alpha version deployment date: Sunday, 19th May
