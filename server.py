@@ -32,7 +32,7 @@ import http.server
 import socketserver
 # PARSER FOR COMMAND LINE ARGUMENTS 
 import argparse
-
+import os
 """
 PORT = 6969
 Handler = http.server.SimpleHTTPRequestHandler
@@ -106,7 +106,7 @@ def main():
 
     # SPECIFY DATABASE - LINKED TO THE DATABASE MODULE
     # I CAN LINK DIRECTLHY TO THE DATABASE BECAUSE IT'S REFERENCED IN THE PYTHONPATH AND MODULE IMPORT, IMPORTED AS "database"
-    
+
     """
     parser.add_argument(
         '--database',
@@ -116,26 +116,32 @@ def main():
         help='the linked SQLite database'
     )  
     """
-
-   
+    
+    # PARSE THE ARGUMENTS AND STORE THEM IN THIS OPTIONS VARIABLE
     options = parser.parse_args()
-    globals()['cc'] = CC(host=options.host, port=options.port)
+    # INSTANTIATE THE CC CLASS - CREATING A NEW COMMAND & CONTROL SERVER OBJECT CALLED cc
+    cc = CC(host=options.host, port=options.port)
+    # OPEN UP THE CMD TERMINAL 
+    cc.run()
 
+    
 
+    
 
 
 # COMMAND & CONTROL (CC) 
 # RETURNS AN INSTANCE OF THE CC SERVER
 # WILL BE INSTANTIATED IN THE main() FUNCTION - WRITE THE run() FUNCTION FOR IT TO LAUNCH THE TERMINAL
 class CC():
-    def __init__(self, host='127.0.0.1', port=6969, db=":memory:"):
+    def __init__(self, host, port):
         """
         CREATES A NEW COMMAND & CONTROL SERVER, FIRE IT UP WITH SPECIFIED PARAMETERS
         INSTANTIATED WITH THE main() FUNCTION
 
         DB IS TAKEN FROM :memory:, AS IN THE CURRENT SESSION
         """
-        
+        self.host = host
+        self.port = port
 
     def run(self):
         """
@@ -143,6 +149,11 @@ class CC():
         ALSO IT FIRES UP THE PYTHON HTTP WEB SERVER serve_forever 
         OPENS UP A TERMINAL READY TO RECEIVE COMMANDS, ALSO REACTS TO KEYBOARD INTERRUPTS
         """
+        Handler = http.server.SimpleHTTPRequestHandler
+        with socketserver.TCPServer((self.host, self.port), Handler) as httpd:
+            print("Server is running at port ", self.port)
+            httpd.serve_forever()
+            
 
 # RUN MAIN FUNCTION ONLY WHEN THIS PROGRAM IS BEING EXECUTED, NOT IMPORTED 
 if __name__ == '__main__':
