@@ -33,6 +33,7 @@ import socketserver
 # PARSER FOR COMMAND LINE ARGUMENTS 
 import argparse
 import os
+import click
 """
 PORT = 6969
 Handler = http.server.SimpleHTTPRequestHandler
@@ -152,8 +153,17 @@ class CC():
         Handler = http.server.SimpleHTTPRequestHandler
         with socketserver.TCPServer((self.host, self.port), Handler) as httpd:
             print("Server is running at port ", self.port)
-            httpd.serve_forever()
+            # httpd.serve_forever()
             
+
+
+""" 
+    CLI CONFIG WITH click 
+"""
+# write it here when tests are done on clickTest.py in this folder 
+
+
+
 
 # RUN MAIN FUNCTION ONLY WHEN THIS PROGRAM IS BEING EXECUTED, NOT IMPORTED 
 if __name__ == '__main__':
